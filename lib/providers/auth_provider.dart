@@ -150,7 +150,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       name: fullName.trim(),
       relation: 'SELF',
       phone: phone.trim(),
-      syncStatus: 'pending_create',
     ).toMap());
 
     final prefs = await SharedPreferences.getInstance();

@@ -53,7 +53,7 @@ class _PatientRegisterScreenState extends ConsumerState<PatientRegisterScreen> {
               ),
               const SizedBox(height: 6),
               const Text(
-                'Access doctor directories, book appointments, and store medical files with offline-first synchronization.',
+                'Access doctor directories, book appointments, and manage medical files seamlessly.',
                 style: TextStyle(fontSize: 13, color: AppColors.slate600),
               ),
               const SizedBox(height: 20),

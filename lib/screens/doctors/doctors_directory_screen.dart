@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../models/doctor_model.dart';
 import '../../providers/app_providers.dart';
-import '../sync/sync_status_bar.dart';
 import '../appointments/book_appointment_sheet.dart';
 
 class DoctorsDirectoryScreen extends ConsumerWidget {
@@ -35,8 +34,6 @@ class DoctorsDirectoryScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          const SyncStatusBar(),
-
           // Search Box
           Container(
             color: Colors.white,
@@ -100,7 +97,7 @@ class DoctorsDirectoryScreen extends ConsumerWidget {
               data: (doctors) {
                 if (doctors.isEmpty) {
                   return const Center(
-                    child: Text('No doctors match your search in the offline directory.'),
+                    child: Text('No doctors match your search.'),
                   );
                 }
 

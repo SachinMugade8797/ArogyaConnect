@@ -16,7 +16,7 @@ class AppDatabase {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('arogyanexus_offline_v2.db');
+    _database = await _initDB('arogyanexus.db');
     return _database!;
   }
 
@@ -26,13 +26,13 @@ class AppDatabase {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 1,
       onCreate: _createDB,
     );
   }
 
   Future<void> _createDB(Database db, int version) async {
-    // 1. Users (Auth table mirroring Prisma `User`)
+    // 1. Users table (Patient & Doctor authentication)
     await db.execute('''
       CREATE TABLE users (
         id TEXT PRIMARY KEY,
@@ -45,7 +45,7 @@ class AppDatabase {
       )
     ''');
 
-    // 2. Doctor Profiles (Mirroring Prisma `DoctorProfile`)
+    // 2. Doctor Profiles
     await db.execute('''
       CREATE TABLE doctor_profiles (
         id TEXT PRIMARY KEY,
@@ -82,12 +82,11 @@ class AppDatabase {
         emergency_phone TEXT,
         emergency_relation TEXT,
         allergies TEXT,
-        onboarding_step INTEGER DEFAULT 3,
-        sync_status TEXT DEFAULT 'synced'
+        onboarding_step INTEGER DEFAULT 3
       )
     ''');
 
-    // 4. Doctor Directory Cache (for patient discovery)
+    // 4. Doctor Directory Cache
     await db.execute('''
       CREATE TABLE doctors (
         id TEXT PRIMARY KEY,
@@ -121,7 +120,6 @@ class AppDatabase {
         status TEXT NOT NULL,
         mode TEXT DEFAULT 'IN_PERSON',
         token_number INTEGER,
-        sync_status TEXT DEFAULT 'synced',
         updated_at TEXT NOT NULL
       )
     ''');
@@ -134,12 +132,11 @@ class AppDatabase {
         type TEXT NOT NULL,
         value REAL NOT NULL,
         unit TEXT NOT NULL,
-        measured_at TEXT NOT NULL,
-        sync_status TEXT DEFAULT 'synced'
+        measured_at TEXT NOT NULL
       )
     ''');
 
-    // 7. Patient Conditions (Chronic diseases, allergies, history)
+    // 7. Patient Conditions
     await db.execute('''
       CREATE TABLE patient_conditions (
         id TEXT PRIMARY KEY,
@@ -147,8 +144,7 @@ class AppDatabase {
         name TEXT NOT NULL,
         status TEXT NOT NULL DEFAULT 'ACTIVE',
         since TEXT,
-        notes TEXT,
-        sync_status TEXT DEFAULT 'synced'
+        notes TEXT
       )
     ''');
 
@@ -162,8 +158,7 @@ class AppDatabase {
         issuer TEXT NOT NULL,
         record_date TEXT NOT NULL,
         file_name TEXT,
-        verification_status TEXT DEFAULT 'AI_VERIFIED',
-        sync_status TEXT DEFAULT 'synced'
+        verification_status TEXT DEFAULT 'AI_VERIFIED'
       )
     ''');
 
@@ -178,36 +173,11 @@ class AppDatabase {
         notes TEXT,
         tests_advised TEXT,
         follow_up_date TEXT,
-        sync_status TEXT DEFAULT 'synced',
         created_at TEXT NOT NULL
       )
     ''');
 
-    // 10. Sync Outbox Queue
-    await db.execute('''
-      CREATE TABLE sync_queue (
-        id TEXT PRIMARY KEY,
-        entity_type TEXT NOT NULL,
-        entity_id TEXT NOT NULL,
-        action TEXT NOT NULL,
-        payload TEXT NOT NULL,
-        status TEXT DEFAULT 'PENDING',
-        attempts INTEGER DEFAULT 0,
-        last_error TEXT,
-        created_at TEXT NOT NULL
-      )
-    ''');
-
-    // 11. Sync Metadata
-    await db.execute('''
-      CREATE TABLE sync_metadata (
-        key TEXT PRIMARY KEY,
-        value TEXT,
-        updated_at TEXT NOT NULL
-      )
-    ''');
-
-    // Pre-populate offline demo data for both Patient and Doctor roles
+    // Seed initial application data
     await _seedInitialData(db);
   }
 
@@ -270,7 +240,6 @@ class AppDatabase {
       emergencyPhone: '+91 98221 00102',
       emergencyRelation: 'SPOUSE',
       onboardingStep: 3,
-      syncStatus: 'synced',
     ).toMap());
 
     await db.insert('profiles', ProfileModel(
@@ -289,10 +258,9 @@ class AppDatabase {
       emergencyPhone: '+91 98221 00101',
       emergencyRelation: 'SPOUSE',
       onboardingStep: 3,
-      syncStatus: 'synced',
     ).toMap());
 
-    // 4. Seed Doctors Directory Cache
+    // 4. Seed Doctors Directory
     final initialDoctors = [
       DoctorModel(
         id: 'doc-1',
@@ -364,7 +332,7 @@ class AppDatabase {
       notes: 'Advised dietary fat reduction and low cholesterol intake.',
     ).toMap());
 
-    // 6. Seed Appointments (Visible to both Patient Sachin & Doctor Dr. Aditi)
+    // 6. Seed Appointments
     final initialAppointments = [
       AppointmentModel(
         id: 'app-seed-1',
@@ -379,7 +347,6 @@ class AppDatabase {
         status: 'confirmed',
         mode: 'IN_PERSON',
         tokenNumber: 3,
-        syncStatus: 'synced',
       ),
       AppointmentModel(
         id: 'app-seed-2',
@@ -394,7 +361,6 @@ class AppDatabase {
         status: 'confirmed',
         mode: 'VIDEO',
         tokenNumber: 7,
-        syncStatus: 'synced',
       ),
     ];
 
@@ -452,7 +418,6 @@ class AppDatabase {
       recordDate: now.subtract(const Duration(days: 3)),
       fileName: 'echocardiogram_ecg_report.pdf',
       verificationStatus: 'DOCTOR_VERIFIED',
-      syncStatus: 'synced',
     ).toMap());
 
     await db.insert('health_records', HealthRecordModel(
@@ -464,7 +429,6 @@ class AppDatabase {
       recordDate: now.subtract(const Duration(days: 14)),
       fileName: 'cbc_report_oct2026.pdf',
       verificationStatus: 'AI_VERIFIED',
-      syncStatus: 'synced',
     ).toMap());
 
     await db.insert('health_records', HealthRecordModel(
@@ -476,7 +440,6 @@ class AppDatabase {
       recordDate: now.subtract(const Duration(days: 28)),
       fileName: 'cardiology_prescription.pdf',
       verificationStatus: 'DOCTOR_VERIFIED',
-      syncStatus: 'synced',
     ).toMap());
   }
 

@@ -533,13 +533,13 @@ class _DoctorPatientRecordsScreenState extends ConsumerState<DoctorPatientRecord
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Consultation recorded & saved to local SQLite database!'),
+                            content: Text('Consultation recorded successfully!'),
                             backgroundColor: AppColors.primary700,
                           ),
                         );
                       }
                     },
-                    child: const Text('Complete Consultation (Offline Saved)', style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: const Text('Complete Consultation', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ),
               ],

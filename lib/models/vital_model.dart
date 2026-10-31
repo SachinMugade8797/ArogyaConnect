@@ -5,7 +5,6 @@ class VitalReadingModel {
   final double value;
   final String unit;
   final DateTime measuredAt;
-  final String syncStatus;
 
   VitalReadingModel({
     required this.id,
@@ -14,7 +13,6 @@ class VitalReadingModel {
     required this.value,
     required this.unit,
     required this.measuredAt,
-    this.syncStatus = 'synced',
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +23,6 @@ class VitalReadingModel {
       'value': value,
       'unit': unit,
       'measured_at': measuredAt.toIso8601String(),
-      'sync_status': syncStatus,
     };
   }
 
@@ -37,7 +34,6 @@ class VitalReadingModel {
       value: (map['value'] as num).toDouble(),
       unit: map['unit'] as String,
       measuredAt: DateTime.parse(map['measured_at'] as String),
-      syncStatus: map['sync_status'] as String? ?? 'synced',
     );
   }
 }

@@ -14,7 +14,6 @@ class ProfileModel {
   final String? emergencyRelation;
   final List<String> allergies;
   final int onboardingStep;
-  final String syncStatus;
 
   ProfileModel({
     required this.id,
@@ -32,7 +31,6 @@ class ProfileModel {
     this.emergencyRelation,
     this.allergies = const [],
     this.onboardingStep = 3,
-    this.syncStatus = 'synced',
   });
 
   Map<String, dynamic> toMap() {
@@ -52,7 +50,6 @@ class ProfileModel {
       'emergency_relation': emergencyRelation,
       'allergies': allergies.join(','),
       'onboarding_step': onboardingStep,
-      'sync_status': syncStatus,
     };
   }
 
@@ -75,7 +72,6 @@ class ProfileModel {
           ? (map['allergies'] as String).split(',')
           : [],
       onboardingStep: (map['onboarding_step'] as num?)?.toInt() ?? 3,
-      syncStatus: map['sync_status'] as String? ?? 'synced',
     );
   }
 }

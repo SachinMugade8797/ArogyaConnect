@@ -26,7 +26,7 @@ class VitalsSummaryCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Health Vitals (Offline Logged)',
+                'Health Vitals',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -51,7 +51,7 @@ class VitalsSummaryCard extends ConsumerWidget {
               if (vitals.isEmpty) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Text('No vitals recorded yet. Tap "Log Vital" to save locally.',
+                  child: Text('No vitals recorded yet. Tap "Log Vital" to add.',
                       style: TextStyle(fontSize: 13, color: AppColors.slate500)),
                 );
               }

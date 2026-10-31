@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../models/appointment_model.dart';
 import '../../providers/app_providers.dart';
-import '../sync/sync_status_bar.dart';
 import 'book_appointment_sheet.dart';
 
 class AppointmentsScreen extends ConsumerStatefulWidget {
@@ -53,33 +52,26 @@ class _AppointmentsScreenState extends ConsumerState<AppointmentsScreen> with Si
           ],
         ),
       ),
-      body: Column(
-        children: [
-          const SyncStatusBar(),
-          Expanded(
-            child: appointmentsAsync.when(
-              data: (appointments) {
-                final now = DateTime.now().subtract(const Duration(hours: 1));
-                final upcoming = appointments
-                    .where((a) => a.status != 'cancelled' && a.appointmentAt.isAfter(now))
-                    .toList();
-                final past = appointments
-                    .where((a) => a.status == 'cancelled' || a.appointmentAt.isBefore(now))
-                    .toList();
+      body: appointmentsAsync.when(
+        data: (appointments) {
+          final now = DateTime.now().subtract(const Duration(hours: 1));
+          final upcoming = appointments
+              .where((a) => a.status != 'cancelled' && a.appointmentAt.isAfter(now))
+              .toList();
+          final past = appointments
+              .where((a) => a.status == 'cancelled' || a.appointmentAt.isBefore(now))
+              .toList();
 
-                return TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _AppointmentList(appointments: upcoming, isUpcoming: true),
-                    _AppointmentList(appointments: past, isUpcoming: false),
-                  ],
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, _) => Center(child: Text('Error loading appointments: $err')),
-            ),
-          ),
-        ],
+          return TabBarView(
+            controller: _tabController,
+            children: [
+              _AppointmentList(appointments: upcoming, isUpcoming: true),
+              _AppointmentList(appointments: past, isUpcoming: false),
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, _) => Center(child: Text('Error loading appointments: $err')),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.primary600,
@@ -164,28 +156,13 @@ class _AppointmentList extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      if (a.syncStatus != 'synced')
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          margin: const EdgeInsets.only(right: 6),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFEF3C7),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Text(
-                            'Offline queued',
-                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFFB45309)),
-                          ),
-                        ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: a.status == 'cancelled' ? const Color(0xFFFEE2E2) : const Color(0xFFDCFCE7),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: a.status == 'cancelled' ? const Color(0xFFFEE2E2) : const Color(0xFFDCFCE7),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
                           a.status.toUpperCase(),
                           style: TextStyle(
                             fontSize: 10,
@@ -194,8 +171,6 @@ class _AppointmentList extends ConsumerWidget {
                           ),
                         ),
                       ),
-                    ],
-                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -243,7 +218,7 @@ class _AppointmentList extends ConsumerWidget {
                         context: context,
                         builder: (_) => AlertDialog(
                           title: const Text('Cancel Appointment?'),
-                          content: const Text('Are you sure you want to cancel this appointment? This change will be queued offline.'),
+                          content: const Text('Are you sure you want to cancel this appointment?'),
                           actions: [
                             TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('No')),
                             ElevatedButton(

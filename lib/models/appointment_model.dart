@@ -8,10 +8,9 @@ class AppointmentModel {
   final String clinicName;
   final DateTime appointmentAt;
   final String? reason;
-  final String status; // 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  final String status; // 'pending' | 'confirmed' | 'waiting' | 'in_consultation' | 'completed' | 'cancelled'
   final String mode;   // 'IN_PERSON' | 'VIDEO'
   final int? tokenNumber;
-  final String syncStatus; // 'synced' | 'pending_create' | 'pending_update' | 'pending_delete'
   final DateTime updatedAt;
 
   AppointmentModel({
@@ -27,7 +26,6 @@ class AppointmentModel {
     this.status = 'confirmed',
     this.mode = 'IN_PERSON',
     this.tokenNumber,
-    this.syncStatus = 'synced',
     DateTime? updatedAt,
   }) : updatedAt = updatedAt ?? DateTime.now();
 
@@ -45,7 +43,6 @@ class AppointmentModel {
       'status': status,
       'mode': mode,
       'token_number': tokenNumber,
-      'sync_status': syncStatus,
       'updated_at': updatedAt.toIso8601String(),
     };
   }
@@ -64,7 +61,6 @@ class AppointmentModel {
       status: map['status'] as String? ?? 'confirmed',
       mode: map['mode'] as String? ?? 'IN_PERSON',
       tokenNumber: (map['token_number'] as num?)?.toInt(),
-      syncStatus: map['sync_status'] as String? ?? 'synced',
       updatedAt: map['updated_at'] != null
           ? DateTime.parse(map['updated_at'] as String)
           : DateTime.now(),
@@ -84,7 +80,6 @@ class AppointmentModel {
     String? status,
     String? mode,
     int? tokenNumber,
-    String? syncStatus,
     DateTime? updatedAt,
   }) {
     return AppointmentModel(
@@ -100,7 +95,6 @@ class AppointmentModel {
       status: status ?? this.status,
       mode: mode ?? this.mode,
       tokenNumber: tokenNumber ?? this.tokenNumber,
-      syncStatus: syncStatus ?? this.syncStatus,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }

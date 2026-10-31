@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../providers/app_providers.dart';
-import '../sync/sync_status_bar.dart';
 import 'add_vital_dialog.dart';
 
 class RecordsScreen extends ConsumerWidget {
@@ -25,13 +24,9 @@ class RecordsScreen extends ConsumerWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Column(
+      body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          const SyncStatusBar(),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
                 // Vitals Section Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +67,7 @@ class RecordsScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.slate200),
                         ),
-                        child: const Text('No vitals recorded yet. Tap "+ Add Vital" to record offline.'),
+                        child: const Text('No vitals recorded yet. Tap "+ Add Vital" to record.'),
                       );
                     }
 
@@ -125,10 +120,6 @@ class RecordsScreen extends ConsumerWidget {
                                       color: AppColors.primary700,
                                     ),
                                   ),
-                                  if (v.syncStatus != 'synced') ...[
-                                    const SizedBox(width: 8),
-                                    const Icon(Icons.cloud_upload_outlined, size: 16, color: Color(0xFFB45309)),
-                                  ],
                                 ],
                               ),
                             ],
@@ -159,7 +150,7 @@ class RecordsScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.slate200),
                         ),
-                        child: const Text('No medical documents found in local database.'),
+                        child: const Text('No medical documents found.'),
                       );
                     }
 
@@ -237,9 +228,6 @@ class RecordsScreen extends ConsumerWidget {
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

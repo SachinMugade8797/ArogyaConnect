@@ -35,5 +35,5 @@ class AppColors {
   static const Color errorRed = Color(0xFFEF4444);
   static const Color successGreen = Color(0xFF10B981);
   static const Color warningOrange = Color(0xFFF59E0B);
-  static const Color offlineGrey = Color(0xFF64748B);
+  static const Color neutralGrey = Color(0xFF64748B);
 }

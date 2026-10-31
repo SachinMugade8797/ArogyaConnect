@@ -1,13 +1,12 @@
 class HealthRecordModel {
   final String id;
   final String patientId;
-  final String category; // 'PRESCRIPTION', 'LAB_REPORT', 'DISCHARGE_SUMMARY', 'VACCINE'
+  final String category; // 'PRESCRIPTION', 'LAB_REPORT', 'DISCHARGE_SUMMARY', 'IMAGING'
   final String title;
   final String issuer;
   final DateTime recordDate;
   final String? fileName;
   final String verificationStatus; // 'PENDING', 'AI_VERIFIED', 'DOCTOR_VERIFIED', 'REJECTED'
-  final String syncStatus;
 
   HealthRecordModel({
     required this.id,
@@ -18,7 +17,6 @@ class HealthRecordModel {
     required this.recordDate,
     this.fileName,
     this.verificationStatus = 'AI_VERIFIED',
-    this.syncStatus = 'synced',
   });
 
   Map<String, dynamic> toMap() {
@@ -31,7 +29,6 @@ class HealthRecordModel {
       'record_date': recordDate.toIso8601String(),
       'file_name': fileName,
       'verification_status': verificationStatus,
-      'sync_status': syncStatus,
     };
   }
 
@@ -45,7 +42,6 @@ class HealthRecordModel {
       recordDate: DateTime.parse(map['record_date'] as String),
       fileName: map['file_name'] as String?,
       verificationStatus: map['verification_status'] as String? ?? 'AI_VERIFIED',
-      syncStatus: map['sync_status'] as String? ?? 'synced',
     );
   }
 }

@@ -5,7 +5,6 @@ class PatientConditionModel {
   final String status; // 'ACTIVE' | 'RESOLVED'
   final String? since;
   final String? notes;
-  final String syncStatus;
 
   PatientConditionModel({
     required this.id,
@@ -14,7 +13,6 @@ class PatientConditionModel {
     this.status = 'ACTIVE',
     this.since,
     this.notes,
-    this.syncStatus = 'synced',
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +23,6 @@ class PatientConditionModel {
       'status': status,
       'since': since,
       'notes': notes,
-      'sync_status': syncStatus,
     };
   }
 
@@ -37,7 +34,6 @@ class PatientConditionModel {
       status: map['status'] as String? ?? 'ACTIVE',
       since: map['since'] as String?,
       notes: map['notes'] as String?,
-      syncStatus: map['sync_status'] as String? ?? 'synced',
     );
   }
 }

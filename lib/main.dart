@@ -10,7 +10,7 @@ import 'screens/doctor/doctor_navigation_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize offline SQLite database with full schema and seed data
+  // Initialize local database with full schema and seed data
   await AppDatabase.instance.database;
 
   runApp(

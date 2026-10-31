@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import '../core/database/app_database.dart';
 import '../models/appointment_model.dart';
@@ -7,8 +6,6 @@ import '../models/vital_model.dart';
 import '../models/condition_model.dart';
 import '../models/health_record_model.dart';
 import '../models/visit_record_model.dart';
-import '../models/sync_item_model.dart';
-import '../core/sync/sync_engine.dart';
 
 class PatientClinicalDossier {
   final ProfileModel patient;
@@ -38,10 +35,7 @@ class DoctorQueueItem {
 
 class DoctorConsultationRepository {
   final AppDatabase _db = AppDatabase.instance;
-  final SyncEngine _syncEngine;
   final _uuid = const Uuid();
-
-  DoctorConsultationRepository(this._syncEngine);
 
   /// Fetch today's patient queue for the doctor
   Future<List<DoctorQueueItem>> getDoctorAppointments(String doctorProfileId) async {
@@ -134,23 +128,11 @@ class DoctorConsultationRepository {
       'appointments',
       {
         'status': status,
-        'sync_status': 'pending_update',
         'updated_at': DateTime.now().toIso8601String(),
       },
       where: 'id = ?',
       whereArgs: [appointmentId],
     );
-
-    // Queue mutation
-    final syncItem = SyncItemModel(
-      id: _uuid.v4(),
-      entityType: 'appointment',
-      entityId: appointmentId,
-      action: 'UPDATE',
-      payload: jsonEncode({'status': status}),
-    );
-    await db.insert('sync_queue', syncItem.toMap());
-    _syncEngine.syncAll();
   }
 
   /// Record doctor consultation diagnosis, notes and advise tests
@@ -176,7 +158,6 @@ class DoctorConsultationRepository {
       notes: notes,
       testsAdvised: testsAdvised,
       followUpDate: followUpDate,
-      syncStatus: 'pending_create',
       createdAt: now,
     );
 
@@ -186,26 +167,6 @@ class DoctorConsultationRepository {
     // 2. Mark Appointment as COMPLETED
     await updateAppointmentStatus(appointmentId, 'COMPLETED');
 
-    // 3. Queue offline sync
-    final syncItem = SyncItemModel(
-      id: _uuid.v4(),
-      entityType: 'visit_record',
-      entityId: visitId,
-      action: 'CREATE',
-      payload: jsonEncode({
-        'id': visitId,
-        'appointment_id': appointmentId,
-        'profile_id': profileId,
-        'doctor_profile_id': doctorProfileId,
-        'diagnosis': diagnosis,
-        'notes': notes,
-        'tests_advised': testsAdvised,
-        'follow_up_date': followUpDate,
-      }),
-    );
-    await db.insert('sync_queue', syncItem.toMap());
-
-    _syncEngine.syncAll();
     return visit;
   }
 
@@ -216,20 +177,9 @@ class DoctorConsultationRepository {
       'health_records',
       {
         'verification_status': 'DOCTOR_VERIFIED',
-        'sync_status': 'pending_update',
       },
       where: 'id = ?',
       whereArgs: [recordId],
     );
-
-    final syncItem = SyncItemModel(
-      id: _uuid.v4(),
-      entityType: 'health_record',
-      entityId: recordId,
-      action: 'UPDATE',
-      payload: jsonEncode({'verification_status': 'DOCTOR_VERIFIED'}),
-    );
-    await db.insert('sync_queue', syncItem.toMap());
-    _syncEngine.syncAll();
   }
 }

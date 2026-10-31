@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../providers/app_providers.dart';
 import '../../providers/auth_provider.dart';
-import '../sync/sync_status_bar.dart';
 import 'widgets/active_profile_bar.dart';
 import 'widgets/vitals_summary_card.dart';
 import 'widgets/upcoming_appointment_card.dart';
@@ -82,18 +81,13 @@ class DashboardScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SyncStatusBar(),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await ref.read(syncEngineProvider).syncAll();
-                ref.invalidate(appointmentsListProvider);
-                ref.invalidate(vitalsListProvider);
-                ref.invalidate(healthRecordsListProvider);
-              },
-              child: ListView(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(appointmentsListProvider);
+          ref.invalidate(vitalsListProvider);
+          ref.invalidate(healthRecordsListProvider);
+        },
+        child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
                   // Active Family Profile Switcher
@@ -205,7 +199,7 @@ class DashboardScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Vitals Snapshot (Offline)
+                  // Vitals Snapshot
                   VitalsSummaryCard(
                     onAddVital: () {
                       showDialog(
@@ -298,9 +292,6 @@ class DashboardScreen extends ConsumerWidget {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
     );
   }
 }

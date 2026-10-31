@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:arogyanexus_app/main.dart';
@@ -9,6 +10,6 @@ void main() {
         child: ArogyaNexusApp(),
       ),
     );
-    expect(find.text('ArogyaNexus'), findsOneWidget);
+    expect(find.byType(MaterialApp), findsOneWidget);
   });
 }

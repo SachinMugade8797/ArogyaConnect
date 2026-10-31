@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../core/sync/sync_engine.dart';
 import '../repositories/profile_repository.dart';
 import '../repositories/doctor_repository.dart';
 import '../repositories/appointment_repository.dart';
@@ -13,11 +12,7 @@ import '../models/vital_model.dart';
 import '../models/health_record_model.dart';
 import 'auth_provider.dart';
 
-// Singletons & Core Services
-final syncEngineProvider = ChangeNotifierProvider<SyncEngine>((ref) {
-  return SyncEngine();
-});
-
+// Repositories
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
   return ProfileRepository();
 });
@@ -27,13 +22,11 @@ final doctorRepositoryProvider = Provider<DoctorRepository>((ref) {
 });
 
 final appointmentRepositoryProvider = Provider<AppointmentRepository>((ref) {
-  final engine = ref.watch(syncEngineProvider);
-  return AppointmentRepository(engine);
+  return AppointmentRepository();
 });
 
 final vitalRepositoryProvider = Provider<VitalRepository>((ref) {
-  final engine = ref.watch(syncEngineProvider);
-  return VitalRepository(engine);
+  return VitalRepository();
 });
 
 final healthRecordRepositoryProvider = Provider<HealthRecordRepository>((ref) {
@@ -41,8 +34,7 @@ final healthRecordRepositoryProvider = Provider<HealthRecordRepository>((ref) {
 });
 
 final doctorConsultationRepositoryProvider = Provider<DoctorConsultationRepository>((ref) {
-  final engine = ref.watch(syncEngineProvider);
-  return DoctorConsultationRepository(engine);
+  return DoctorConsultationRepository();
 });
 
 // Patient State Providers
@@ -86,7 +78,6 @@ final filteredDoctorsProvider = FutureProvider<List<DoctorModel>>((ref) async {
 
 // Doctor Dashboard State Providers
 final doctorAppointmentsProvider = FutureProvider<List<DoctorQueueItem>>((ref) async {
-  // Use active doctor id or default demo doctor 'doc-1'
   final authState = ref.watch(authProvider);
   final doctorId = (authState.isDoctor) ? 'doc-1' : 'doc-1';
   return ref.watch(doctorConsultationRepositoryProvider).getDoctorAppointments(doctorId);

@@ -19,15 +19,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, dynamic>> _slides = [
     {
       'title': 'Healthcare Connected Around You',
-      'subtitle': 'Zero-Latency Offline Health Suite',
+      'subtitle': 'Personal & Family Healthcare',
       'description':
-          'Access medical records, track vital signs, and book verified appointments without needing active internet connection.',
+          'Access medical records, track vital signs, and book clinic appointments conveniently.',
       'icon': Icons.health_and_safety_rounded,
       'color': AppColors.primary600,
     },
     {
       'title': 'Doctor Clinical Intelligence',
-      'subtitle': 'Live Patient Queues & AI Verification',
+      'subtitle': 'Live Patient Queues & Records',
       'description':
           'Empowering physicians with instant clinical dossiers, past vitals graphs, digital visit records, and document verification.',
       'icon': Icons.medical_services_rounded,
@@ -68,7 +68,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                       Text(
-                        'Mobile Care • Offline First',
+                        'Healthcare Management Platform',
                         style: TextStyle(fontSize: 11, color: AppColors.slate500, fontWeight: FontWeight.w600),
                       ),
                     ],

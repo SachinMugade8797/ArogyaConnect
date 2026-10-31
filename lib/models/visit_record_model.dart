@@ -7,7 +7,6 @@ class VisitRecordModel {
   final String? notes;
   final String? testsAdvised;
   final String? followUpDate;
-  final String syncStatus;
   final DateTime createdAt;
 
   VisitRecordModel({
@@ -19,7 +18,6 @@ class VisitRecordModel {
     this.notes,
     this.testsAdvised,
     this.followUpDate,
-    this.syncStatus = 'synced',
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 
@@ -33,7 +31,6 @@ class VisitRecordModel {
       'notes': notes,
       'tests_advised': testsAdvised,
       'follow_up_date': followUpDate,
-      'sync_status': syncStatus,
       'created_at': createdAt.toIso8601String(),
     };
   }
@@ -48,7 +45,6 @@ class VisitRecordModel {
       notes: map['notes'] as String?,
       testsAdvised: map['tests_advised'] as String?,
       followUpDate: map['follow_up_date'] as String?,
-      syncStatus: map['sync_status'] as String? ?? 'synced',
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'] as String)
           : DateTime.now(),

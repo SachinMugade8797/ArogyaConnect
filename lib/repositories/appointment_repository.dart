@@ -1,16 +1,10 @@
-import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import '../core/database/app_database.dart';
 import '../models/appointment_model.dart';
-import '../models/sync_item_model.dart';
-import '../core/sync/sync_engine.dart';
 
 class AppointmentRepository {
   final AppDatabase _db = AppDatabase.instance;
-  final SyncEngine _syncEngine;
   final _uuid = const Uuid();
-
-  AppointmentRepository(this._syncEngine);
 
   Future<List<AppointmentModel>> getAppointments({String? profileId}) async {
     final db = await _db.database;
@@ -23,7 +17,7 @@ class AppointmentRepository {
     return rows.map((r) => AppointmentModel.fromMap(r)).toList();
   }
 
-  /// Book an appointment offline first!
+  /// Book an appointment
   Future<AppointmentModel> bookAppointment({
     required String patientId,
     required String profileId,
@@ -52,33 +46,11 @@ class AppointmentRepository {
       status: 'confirmed',
       mode: mode,
       tokenNumber: tokenNumber,
-      syncStatus: 'pending_create',
       updatedAt: DateTime.now(),
     );
 
-    // 1. Save directly into local SQLite database
+    // Save directly into local database
     await db.insert('appointments', newAppointment.toMap());
-
-    // 2. Queue mutation into offline sync outbox
-    final syncItem = SyncItemModel(
-      id: _uuid.v4(),
-      entityType: 'appointment',
-      entityId: appointmentId,
-      action: 'CREATE',
-      payload: jsonEncode({
-        'id': appointmentId,
-        'doctorProfileId': doctorProfileId,
-        'profileId': profileId,
-        'appointmentAt': appointmentAt.toIso8601String(),
-        'reason': reason,
-        'mode': mode,
-      }),
-      status: 'PENDING',
-    );
-    await db.insert('sync_queue', syncItem.toMap());
-
-    // 3. Trigger opportunistic sync if online
-    _syncEngine.syncAll();
 
     return newAppointment;
   }
@@ -87,20 +59,12 @@ class AppointmentRepository {
     final db = await _db.database;
     await db.update(
       'appointments',
-      {'status': 'cancelled', 'sync_status': 'pending_update'},
+      {
+        'status': 'cancelled',
+        'updated_at': DateTime.now().toIso8601String(),
+      },
       where: 'id = ?',
       whereArgs: [id],
     );
-
-    final syncItem = SyncItemModel(
-      id: _uuid.v4(),
-      entityType: 'appointment',
-      entityId: id,
-      action: 'UPDATE',
-      payload: jsonEncode({'status': 'cancelled'}),
-      status: 'PENDING',
-    );
-    await db.insert('sync_queue', syncItem.toMap());
-    _syncEngine.syncAll();
   }
 }

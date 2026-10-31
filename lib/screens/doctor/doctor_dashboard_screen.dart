@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../providers/app_providers.dart';
 import '../../providers/auth_provider.dart';
-import '../sync/sync_status_bar.dart';
 import 'doctor_patient_records_screen.dart';
 
 class DoctorDashboardScreen extends ConsumerWidget {
@@ -76,16 +75,11 @@ class DoctorDashboardScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SyncStatusBar(),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await ref.read(syncEngineProvider).syncAll();
-                ref.invalidate(doctorAppointmentsProvider);
-              },
-              child: ListView(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(doctorAppointmentsProvider);
+        },
+        child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
                   // 1. Doctor Profile Greeting Card
@@ -376,9 +370,6 @@ class DoctorDashboardScreen extends ConsumerWidget {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
     );
   }
 }

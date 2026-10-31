@@ -74,11 +74,6 @@ class _AddVitalDialogState extends ConsumerState<AddVitalDialog> {
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'ℹ Stored in offline database immediately; will sync to ArogyaNexus cloud when network is restored.',
-              style: TextStyle(fontSize: 11, color: AppColors.slate500),
-            ),
           ],
         ),
       ),
@@ -118,12 +113,12 @@ class _AddVitalDialogState extends ConsumerState<AddVitalDialog> {
             navigator.pop();
             scaffold.showSnackBar(
               const SnackBar(
-                content: Text('Vital saved locally to SQLite! Ready for sync.'),
+                content: Text('Vital recorded successfully!'),
                 backgroundColor: AppColors.primary700,
               ),
             );
           },
-          child: const Text('Save Locally'),
+          child: const Text('Save Vital'),
         ),
       ],
     );

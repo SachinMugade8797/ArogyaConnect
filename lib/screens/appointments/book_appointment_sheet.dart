@@ -254,7 +254,7 @@ class _BookAppointmentSheetState extends ConsumerState<BookAppointmentSheet> {
                         navigator.pop();
                         scaffold.showSnackBar(
                           const SnackBar(
-                            content: Text('Appointment booked & stored in local database!'),
+                            content: Text('Appointment booked successfully!'),
                             backgroundColor: AppColors.primary700,
                           ),
                         );
@@ -262,7 +262,7 @@ class _BookAppointmentSheetState extends ConsumerState<BookAppointmentSheet> {
                 child: _isSaving
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
-                        'Confirm Appointment (Offline First)',
+                        'Confirm Appointment',
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                       ),
               ),
