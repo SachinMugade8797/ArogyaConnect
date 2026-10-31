@@ -7,6 +7,7 @@ import '../../models/appointment_model.dart';
 import '../../models/vital_model.dart';
 import '../../models/health_record_model.dart';
 import '../../models/condition_model.dart';
+import 'seed_doctors.dart';
 
 class AppDatabase {
   static final AppDatabase instance = AppDatabase._init();
@@ -24,11 +25,20 @@ class AppDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(
+    final db = await openDatabase(
       path,
       version: 1,
       onCreate: _createDB,
     );
+
+    // Verify all 201 doctors migrated from ArogyaNexus web project are populated
+    final countRes = await db.rawQuery('SELECT COUNT(*) as count FROM doctors');
+    final count = Sqflite.firstIntValue(countRes) ?? 0;
+    if (count < 200) {
+      await seedWebDoctors(db);
+    }
+
+    return db;
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -441,6 +451,9 @@ class AppDatabase {
       fileName: 'cardiology_prescription.pdf',
       verificationStatus: 'DOCTOR_VERIFIED',
     ).toMap());
+
+    // Populate all 201 doctor records migrated from web project
+    await seedWebDoctors(db);
   }
 
   Future<void> close() async {

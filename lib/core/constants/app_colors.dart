@@ -15,6 +15,8 @@ class AppColors {
 
   // Accent Blue - Healthcare Network
   static const Color accent50 = Color(0xFFF0F9FF);
+  static const Color accent100 = Color(0xFFE0F2FE);
+  static const Color accent200 = Color(0xFFBAE6FD);
   static const Color accent500 = Color(0xFF0284C7);
   static const Color accent600 = Color(0xFF0369A1);
   static const Color accent700 = Color(0xFF075985);

@@ -65,14 +65,28 @@ final healthRecordsListProvider = FutureProvider<List<HealthRecordModel>>((ref) 
 });
 
 final doctorSearchQueryProvider = StateProvider<String>((ref) => '');
+final doctorCityFilterProvider = StateProvider<String>((ref) => 'All');
 final doctorSpecialityFilterProvider = StateProvider<String>((ref) => 'All');
+final doctorVideoOnlyFilterProvider = StateProvider<bool>((ref) => false);
+final doctorSortByProvider = StateProvider<String>((ref) => 'rating');
+
+final doctorCityCountsProvider = FutureProvider<Map<String, int>>((ref) async {
+  return ref.watch(doctorRepositoryProvider).getDoctorCountsByCity();
+});
 
 final filteredDoctorsProvider = FutureProvider<List<DoctorModel>>((ref) async {
   final search = ref.watch(doctorSearchQueryProvider);
+  final city = ref.watch(doctorCityFilterProvider);
   final speciality = ref.watch(doctorSpecialityFilterProvider);
+  final videoOnly = ref.watch(doctorVideoOnlyFilterProvider);
+  final sortBy = ref.watch(doctorSortByProvider);
+
   return ref.watch(doctorRepositoryProvider).getDoctors(
         search: search,
+        city: city,
         speciality: speciality,
+        videoOnly: videoOnly,
+        sortBy: sortBy,
       );
 });
 
