@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/constants/app_colors.dart';
 import 'core/database/app_database.dart';
 import 'providers/auth_provider.dart';
-import 'screens/auth/onboarding_screen.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/main_navigation_screen.dart';
 import 'screens/doctor/doctor_navigation_screen.dart';
 
@@ -33,7 +33,7 @@ class ArogyaNexusApp extends ConsumerWidget {
         body: Center(child: CircularProgressIndicator(color: AppColors.primary600)),
       );
     } else if (!authState.isAuthenticated) {
-      homeScreen = const OnboardingScreen();
+      homeScreen = const LoginScreen();
     } else if (authState.isDoctor) {
       homeScreen = const DoctorNavigationScreen();
     } else {
