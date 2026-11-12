@@ -1,155 +1,337 @@
-# ArogyaConnect
+
+# 🏥 ArogyaConnect — Healthcare Management Platform
 
 ### Healthcare, connected around you.
 
-[![Flutter](https://img.shields.io/badge/Flutter-App-02569B?logo=flutter&logoColor=white)](https://flutter.dev/)
-[![Dart](https://img.shields.io/badge/Dart-%5E3.11.5-0175C2?logo=dart&logoColor=white)](https://dart.dev/)
-[![State management](https://img.shields.io/badge/State-Riverpod-6B4EFF)](https://riverpod.dev/)
-[![Storage](https://img.shields.io/badge/Storage-Local%20SQLite-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![Project status](https://img.shields.io/badge/Status-Prototype-orange)](#project-status)
+![Flutter](https://img.shields.io/badge/Flutter-Mobile%20App-02569B?logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-3.11.5-0175C2?logo=dart&logoColor=white)
+![Riverpod](https://img.shields.io/badge/State%20Management-Riverpod-6B4EFF)
+![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?logo=sqlite&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-green)
+![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
 
-**ArogyaConnect** is a healthcare companion app prototype for patients, families, and doctors. Patients can keep track of health information and appointments, while doctors can review patient records and save consultation notes. The app is built with Flutter and currently stores its working data on the device.
+**ArogyaConnect** is a Flutter-based healthcare management application designed to bring patients, families, and doctors together through a unified digital healthcare experience.
 
-> This project is a prototype for learning and demonstration. It is not a replacement for professional medical advice, and it is not ready to store real patient information or run a real clinic.
+The application provides dedicated patient and doctor portals, allowing patients to manage their health information, monitor vital readings, maintain medical records, discover doctors, and manage appointments. Doctors can access patient information, review medical histories, manage appointments, and document consultations.
 
-## At a glance
+With a local SQLite database, Riverpod state management, and an intuitive Flutter interface, ArogyaConnect provides an integrated healthcare management experience.
 
-- 👤 **For patients:** view a health dashboard, switch between family profiles, log vital readings, keep a list of medical documents, and book appointments.
-- 🩺 **For doctors:** review a demo patient queue, open patient dossiers, update appointment statuses, record visit notes, and mark documents as doctor verified.
-- 📍 **Doctor directory:** search a local directory of 201 seeded doctor listings by name, clinic, city, or speciality.
-- 📱 **Built with Flutter:** a shared codebase with Android and iOS project folders.
-- 💾 **Local-first prototype:** app data is stored in a SQLite database on the device; there is no connected online service.
+---
 
-## Who can use the app?
+## ✨ Key Features
 
-### Patient and family portal
+### 👤 1. Patient & Family Management
 
-After signing in as a patient, the bottom navigation has four sections:
+Manage personal and family healthcare information from a single application.
 
-1. **Dashboard** — a snapshot of the selected profile, recent health information, and shortcuts to common actions.
-2. **Appointments** — upcoming and past visits, plus the option to book or cancel an appointment.
-3. **Doctors** — browse the seeded directory, search, apply filters, and start booking with a selected doctor.
-4. **Records** — review saved vital readings and medical document entries.
+- Personalized patient dashboard.
+- Family profile management with profile switching.
+- Access individual family member health information.
+- View recent health activities and medical information.
+- Manage personal healthcare records.
 
-The profile switcher is designed for a patient managing their own and family members’ information. The seeded demo includes a patient and a spouse profile.
+### 🩺 2. Doctor Directory
 
-### Doctor portal
+Discover doctors through an integrated doctor directory.
 
-The doctor experience has three sections:
+- Browse a directory of 200+ doctor listings.
+- Search doctors by name, clinic, city, or speciality.
+- Filter doctors based on medical speciality and location.
+- Filter doctors offering video consultation.
+- Sort and explore available doctor profiles.
+- Initiate appointment booking directly from a selected doctor.
 
-1. **Patient Queue** — view appointment entries and update their status.
-2. **Patient Dossiers** — open demo patient records, including available demographics, conditions, vitals, documents, and visit history.
-3. **Doctor Profile** — view the demo doctor profile, switch to the patient demo portal, or sign out.
+### 📅 3. Appointment Management
 
-From a dossier linked to an appointment, a doctor can enter a diagnosis, consultation notes, tests advised, and a follow-up interval. Saving the consultation adds a visit record and completes the appointment.
+A complete appointment management workflow for patients and doctors.
 
-## What the prototype currently does
+**Patient features:**
+- Book appointments with selected doctors.
+- Select appointment dates and available appointment modes.
+- View upcoming and previous appointments.
+- Cancel existing appointments.
+- Track appointment status.
 
-| Area | Included in this project |
-| --- | --- |
-| Sign-in | Role-based patient and doctor screens, demo sign-in, and local registration forms |
-| Patient profiles | Seeded self and family profiles with a profile switcher |
-| Doctor directory | Local search, city and speciality filters, video-consultation filter, and sorting |
-| Appointments | Local booking, appointment list, status, and cancellation |
-| Vital readings | Save and display blood pressure, glucose, heart rate, SpO₂, temperature, and weight readings |
-| Health records | Save document details, display verification labels, and let a doctor mark a record verified |
-| Doctor consultations | Save diagnosis, notes, tests advised, follow-up information, and completed appointment status |
+**Doctor features:**
+- View scheduled appointments.
+- Access appointment-related patient information.
+- Update appointment statuses.
+- Complete appointments after recording consultations.
 
-## Demo sign-in
+### ❤️ 4. Health Monitoring & Vital Tracking
 
-The login screen includes one-tap demo access. It also displays these sample credentials:
+Keep important health measurements organized in one place.
 
-| Role | Email | Password shown in the app |
-| --- | --- | --- |
+Patients can record and review:
+
+- Blood Pressure
+- Blood Glucose
+- Heart Rate
+- Blood Oxygen (SpO₂)
+- Body Temperature
+- Body Weight
+
+The application maintains individual vital-reading records, making it easier to review previously entered health information.
+
+### 📁 5. Digital Health Records
+
+Organize medical document information through a centralized health records section.
+
+- Maintain medical document details.
+- Associate health records with patient profiles.
+- Select PDF documents through the document picker.
+- View saved document information.
+- Track doctor verification status.
+- Allow doctors to verify medical record entries.
+
+### 👨‍⚕️ 6. Doctor Portal
+
+A dedicated workspace for doctors to manage patient interactions.
+
+**Patient Queue**
+- View appointment entries.
+- Review scheduled patient visits.
+- Update appointment statuses.
+
+**Patient Dossiers**
+- Access patient demographic information.
+- Review existing medical conditions.
+- Examine recorded vital readings.
+- View available medical documents.
+- Review previous consultation history.
+
+**Consultation Management**
+
+Doctors can document consultations by entering:
+
+- Diagnosis
+- Consultation notes
+- Tests advised
+- Follow-up interval
+
+Saving a consultation creates a visit record and updates the associated appointment status.
+
+### 🔐 7. Authentication & Role-Based Navigation
+
+ArogyaConnect provides separate application experiences for patients and doctors.
+
+- Patient and doctor login interfaces.
+- Role-based navigation.
+- Patient registration interface.
+- Doctor demo login.
+- Patient demo login.
+- Dedicated patient and doctor dashboards.
+
+### 💾 8. Local Database Management
+
+The application uses SQLite to manage and persist healthcare information on the device.
+
+The database maintains structured information for:
+
+- Users and authentication details
+- Patient and family profiles
+- Doctor profiles
+- Doctor directory
+- Appointments
+- Vital readings
+- Medical conditions
+- Health records
+- Consultation history
+
+---
+
+## 📱 Application Screens & Navigation
+
+### Patient Application
+
+The patient portal provides four main navigation sections:
+
+| Section | Functionality |
+|---|---|
+| Dashboard | Health overview, profile information, and quick actions |
+| Appointments | Book, view, and manage appointments |
+| Doctors | Search, filter, and explore doctors |
+| Records | View health readings and medical documents |
+
+### Doctor Application
+
+The doctor portal provides three main sections:
+
+| Section | Functionality |
+|---|---|
+| Patient Queue | Manage and review appointment entries |
+| Patient Dossiers | Access patient health information and consultation history |
+| Doctor Profile | View doctor information and manage portal access |
+
+---
+
+## 🔑 Demo Access
+
+The application includes preconfigured demo accounts so users can explore both application roles.
+
+| Role | Email | Password |
+|---|---|---|
 | Patient | `patient@arogyanexus.com` | `patient123` |
 | Doctor | `doctor@arogyanexus.com` | `doctor123` |
 
-These accounts and the associated patient, doctor, appointment, vital, condition, and record data are seeded locally for demonstration.
+The application also provides quick demo access from the login screen.
 
-## Project status and important limitations
+---
 
-ArogyaConnect demonstrates screens and local workflows. The following production services are **not** implemented:
+## 🛠️ Technology Stack
 
-- There is no web server, cloud database, account service, or sync between devices. Data remains in the local app database.
-- Sign-in is demo-only: the current credential flow does not validate the entered password. Passwords entered during registration are stored locally without secure hashing. Do not use real passwords or personal health information with this prototype.
-- Uploaded documents are represented by their details and filename. The selected PDF itself is not saved into the app’s records for later viewing.
-- Appointment bookings are local demo entries. They do not check a real doctor’s availability, notify a clinic, process payment, or reserve an actual appointment.
-- Choosing “Video” records the appointment mode only; there is no video-call feature.
-- Doctor verification is a manual demo status change. There is no AI document analysis or automated verification service.
-- Some doctor and patient screens use fixed demo data. For example, the doctor queue is tied to the seeded doctor, and the patient dossier search screen shows sample patients rather than searching all registered users.
-- The app currently uses a seeded active profile ID. Newly registered patient profiles may not automatically become the selected profile.
+| Technology | Purpose |
+|---|---|
+| Flutter | Cross-platform mobile application development |
+| Dart | Application programming language |
+| Riverpod | State management |
+| SQLite | Local database management |
+| sqflite | SQLite database integration |
+| SharedPreferences | Local session persistence |
+| file_picker | PDF document selection |
+| intl | Date and time formatting |
 
-**Use only fictional or test data.** This app does not provide medical diagnosis or treatment recommendations.
+---
 
-## Run the app
+## 🏗️ Project Architecture
 
-### Requirements
+The project follows a modular architecture that separates application screens, data models, state management, and database operations.
 
-- Flutter SDK installed and available in your terminal.
-- Android Studio with an Android emulator, or a connected Android device. An iOS build requires macOS and Xcode.
-- This project’s Dart SDK constraint is `^3.11.5` (see `pubspec.yaml`).
+```text
+lib/
+│
+├── main.dart
+│
+├── core/
+│   ├── constants/
+│   └── database/
+│       ├── app_database.dart
+│       └── seed_doctors.dart
+│
+├── models/
+│
+├── providers/
+│
+├── repositories/
+│
+└── screens/
+    ├── auth/
+    ├── appointments/
+    ├── dashboard/
+    ├── doctor/
+    ├── doctors/
+    └── records/
+```
 
-### Start
+**Architecture responsibilities:**
 
-From the project folder, run:
+- **Core:** Shared application configuration and database initialization.
+- **Models:** Structured healthcare data and application entities.
+- **Providers:** Application state and authentication state management.
+- **Repositories:** Database queries and data operations.
+- **Screens:** Patient, doctor, authentication, appointment, and medical record interfaces.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Before running the project, ensure you have:
+
+- Flutter SDK installed.
+- Dart SDK compatible with the project.
+- Android Studio or Visual Studio Code.
+- Android emulator or physical Android device.
+- Xcode for iOS development on macOS.
+
+### Installation
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/SachinMugade8797/ArogyaConnect.git
+```
+
+**2. Navigate to the project directory**
+
+```bash
+cd ArogyaConnect
+```
+
+**3. Install dependencies**
 
 ```bash
 flutter pub get
+```
+
+**4. Run the application**
+
+```bash
 flutter run
 ```
 
-To run the existing automated tests:
+**5. Execute automated tests**
 
 ```bash
 flutter test
 ```
 
-The local SQLite database is initialized when the app starts. The first launch seeds the demo data.
+The local SQLite database is initialized when the application starts, and demo data is seeded on the first launch.
 
-## How the app is organized
+---
 
-```text
-lib/
-├── main.dart                     # App startup, theme, and role-based home screen
-├── core/
-│   ├── constants/                # Shared colors
-│   └── database/                 # SQLite schema and seeded demo data
-├── models/                       # User, profile, doctor, appointment, and health data
-├── providers/                    # Authentication and screen state (Riverpod)
-├── repositories/                 # Local database read and write operations
-└── screens/
-    ├── auth/                     # Login, onboarding, and registration
-    ├── appointments/             # Appointment list and booking form
-    ├── dashboard/                # Patient dashboard and summary cards
-    ├── doctor/                   # Doctor queue, profile, and patient dossiers
-    ├── doctors/                  # Doctor directory
-    └── records/                  # Patient vitals and document records
-```
+## 🔮 Future Enhancements
 
-### Main data stored locally
+The project is designed with opportunities for further healthcare technology integration.
 
-The SQLite database contains tables for users, doctor profiles, patient/family profiles, the doctor directory, appointments, vital readings, patient conditions, health-record details, and consultation visit records. It is created and seeded by `lib/core/database/app_database.dart`; the expanded doctor directory data is in `lib/core/database/seed_doctors.dart`.
+Potential future improvements include:
 
-## Technology
+- Cloud-based database and real-time synchronization.
+- Secure authentication and user authorization.
+- AI-powered healthcare assistance.
+- Medical document processing and automated information extraction.
+- Real-time doctor-patient video consultations.
+- Push notifications and appointment reminders.
+- Online appointment scheduling with doctor availability.
+- Secure medical document storage.
+- Healthcare analytics and patient health insights.
 
-- [Flutter](https://flutter.dev/) and Dart
-- [Riverpod](https://riverpod.dev/) for app state
-- [SQLite](https://www.sqlite.org/) through `sqflite` for on-device data
-- SharedPreferences for remembering the local signed-in user ID
-- `file_picker` for choosing a PDF file in the document form
-- `intl` for formatting dates and times
+---
 
-## Related projects
+## 🔗 Related Projects
 
-This mobile app is named **ArogyaConnect**. Its doctor directory and demo data build on the healthcare web project below:
+ArogyaConnect is part of a broader healthcare application ecosystem.
 
-- 📱 **ArogyaConnect — mobile app:** [github.com/SachinMugade8797/ArogyaConnect](https://github.com/SachinMugade8797/ArogyaConnect)
-- 🌐 **ArogyaNexus — related web project and reference:** [github.com/SachinMugade8797/ArogyaNexus](https://github.com/SachinMugade8797/ArogyaNexus)
+📱 **ArogyaConnect — Flutter Mobile Application**
 
-## Contributing
+[GitHub Repository](https://github.com/SachinMugade8797/ArogyaConnect)
 
-Bug reports, thoughtful suggestions, and improvements are welcome. If you build on this prototype, please keep demo data fictional and describe clearly when a feature is simulated or stored only on the device.
+🌐 **ArogyaNexus — Healthcare Web Application**
 
-## License
+[GitHub Repository](https://github.com/SachinMugade8797/ArogyaNexus)
 
-No license file is currently included. Contact the project owner before reusing or redistributing this code.
+---
+
+## 👨‍💻 Developer
+
+**Sachin Mugade**
+
+Software Developer | Flutter & Web Developer
+
+- GitHub: [SachinMugade8797](https://github.com/SachinMugade8797)
+- LinkedIn: [Connect with me](https://www.linkedin.com/in/sachin-mugade-7a3545306/)
+
+---
+
+## 📌 Project Information
+
+ArogyaConnect is an actively developed healthcare management application built for learning, experimentation, and demonstration of modern mobile application development.
+
+The current implementation uses local demo data and on-device SQLite storage. Authentication, document handling, and appointment workflows are intended for demonstration rather than real-world clinical deployment.
+
+**Important:** Use fictional or test information only. ArogyaConnect is not a medical device and does not provide professional medical diagnosis or treatment recommendations.
+
+---
+
+### Healthcare, made more accessible. 🏥
