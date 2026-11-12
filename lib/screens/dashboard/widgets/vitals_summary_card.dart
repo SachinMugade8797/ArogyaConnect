@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../models/vital_model.dart';
 import '../../../providers/app_providers.dart';
 
 class VitalsSummaryCard extends ConsumerWidget {
@@ -56,8 +57,14 @@ class VitalsSummaryCard extends ConsumerWidget {
                 );
               }
 
-              // Take last 3 vitals
-              final recent = vitals.take(3).toList();
+              // Extract only the latest reading per vital type
+              final Map<String, VitalReadingModel> latestMap = {};
+              for (final v in vitals) {
+                if (!latestMap.containsKey(v.type)) {
+                  latestMap[v.type] = v;
+                }
+              }
+              final recent = latestMap.values.take(3).toList();
               return Row(
                 children: recent.map((v) {
                   return Expanded(
