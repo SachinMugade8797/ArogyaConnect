@@ -25,11 +25,14 @@ class AppDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    final db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: _createDB,
-    );
+    final db = await openDatabase(path, version: 1, onCreate: _createDB);
+
+    // Ensure description column exists in existing database
+    try {
+      await db.execute(
+        'ALTER TABLE health_records ADD COLUMN description TEXT;',
+      );
+    } catch (_) {}
 
     // Verify all 201 doctors migrated from ArogyaNexus web project are populated
     final countRes = await db.rawQuery('SELECT COUNT(*) as count FROM doctors');
@@ -165,6 +168,7 @@ class AppDatabase {
         patient_id TEXT NOT NULL,
         category TEXT NOT NULL,
         title TEXT NOT NULL,
+        description TEXT,
         issuer TEXT NOT NULL,
         record_date TEXT NOT NULL,
         file_name TEXT,
@@ -227,48 +231,55 @@ class AppDatabase {
       'status': 'approved',
       'experience_years': 14,
       'languages': 'English,Marathi,Hindi',
-      'bio': 'Senior Consultant Cardiologist specializing in preventive cardiology and hypertension.',
+      'bio':
+          'Senior Consultant Cardiologist specializing in preventive cardiology and hypertension.',
       'offers_video': 1,
       'rating_avg': 4.9,
       'rating_count': 38,
     });
 
     // 3. Seed Patient Profiles
-    await db.insert('profiles', ProfileModel(
-      id: 'profile-self',
-      userId: 'user-patient-1',
-      name: 'Sachin Shinde',
-      relation: 'SELF',
-      bloodGroup: 'B+',
-      dob: '1992-04-12',
-      gender: 'Male',
-      phone: '+91 98221 00101',
-      heightCm: 176,
-      weightKg: 74,
-      allergies: ['Penicillin'],
-      emergencyName: 'Sunita Shinde',
-      emergencyPhone: '+91 98221 00102',
-      emergencyRelation: 'SPOUSE',
-      onboardingStep: 3,
-    ).toMap());
+    await db.insert(
+      'profiles',
+      ProfileModel(
+        id: 'profile-self',
+        userId: 'user-patient-1',
+        name: 'Sachin Shinde',
+        relation: 'SELF',
+        bloodGroup: 'B+',
+        dob: '1992-04-12',
+        gender: 'Male',
+        phone: '+91 98221 00101',
+        heightCm: 176,
+        weightKg: 74,
+        allergies: ['Penicillin'],
+        emergencyName: 'Sunita Shinde',
+        emergencyPhone: '+91 98221 00102',
+        emergencyRelation: 'SPOUSE',
+        onboardingStep: 3,
+      ).toMap(),
+    );
 
-    await db.insert('profiles', ProfileModel(
-      id: 'profile-spouse',
-      userId: 'user-patient-1',
-      name: 'Sunita Shinde',
-      relation: 'SPOUSE',
-      bloodGroup: 'O+',
-      dob: '1994-08-25',
-      gender: 'Female',
-      phone: '+91 98221 00102',
-      heightCm: 162,
-      weightKg: 58,
-      allergies: ['Dust'],
-      emergencyName: 'Sachin Shinde',
-      emergencyPhone: '+91 98221 00101',
-      emergencyRelation: 'SPOUSE',
-      onboardingStep: 3,
-    ).toMap());
+    await db.insert(
+      'profiles',
+      ProfileModel(
+        id: 'profile-spouse',
+        userId: 'user-patient-1',
+        name: 'Sunita Shinde',
+        relation: 'SPOUSE',
+        bloodGroup: 'O+',
+        dob: '1994-08-25',
+        gender: 'Female',
+        phone: '+91 98221 00102',
+        heightCm: 162,
+        weightKg: 58,
+        allergies: ['Dust'],
+        emergencyName: 'Sachin Shinde',
+        emergencyPhone: '+91 98221 00101',
+        emergencyRelation: 'SPOUSE',
+        onboardingStep: 3,
+      ).toMap(),
+    );
 
     // 4. Seed Doctors Directory
     final initialDoctors = [
@@ -284,7 +295,8 @@ class AppDatabase {
         reviewCount: 38,
         experienceYears: 14,
         languages: ['English', 'Marathi', 'Hindi'],
-        bio: 'Senior Consultant Cardiologist specializing in preventive cardiology and hypertension.',
+        bio:
+            'Senior Consultant Cardiologist specializing in preventive cardiology and hypertension.',
         offersVideo: true,
       ),
       DoctorModel(
@@ -299,7 +311,8 @@ class AppDatabase {
         reviewCount: 52,
         experienceYears: 18,
         languages: ['English', 'Marathi'],
-        bio: 'Family doctor experienced in diabetes management and adult lifestyle diseases.',
+        bio:
+            'Family doctor experienced in diabetes management and adult lifestyle diseases.',
         offersVideo: true,
       ),
       DoctorModel(
@@ -314,7 +327,8 @@ class AppDatabase {
         reviewCount: 29,
         experienceYears: 11,
         languages: ['English', 'Kannada', 'Hindi'],
-        bio: 'Dedicated child healthcare specialist with focus on vaccinations and pediatric nutrition.',
+        bio:
+            'Dedicated child healthcare specialist with focus on vaccinations and pediatric nutrition.',
         offersVideo: false,
       ),
     ];
@@ -324,23 +338,29 @@ class AppDatabase {
     }
 
     // 5. Seed Patient Conditions
-    await db.insert('patient_conditions', PatientConditionModel(
-      id: 'cond-1',
-      patientId: 'profile-self',
-      name: 'Essential Hypertension (Stage 1)',
-      status: 'ACTIVE',
-      since: '2024-02-10',
-      notes: 'Controlled with daily lifestyle balance and monitoring.',
-    ).toMap());
+    await db.insert(
+      'patient_conditions',
+      PatientConditionModel(
+        id: 'cond-1',
+        patientId: 'profile-self',
+        name: 'Essential Hypertension (Stage 1)',
+        status: 'ACTIVE',
+        since: '2024-02-10',
+        notes: 'Controlled with daily lifestyle balance and monitoring.',
+      ).toMap(),
+    );
 
-    await db.insert('patient_conditions', PatientConditionModel(
-      id: 'cond-2',
-      patientId: 'profile-self',
-      name: 'Mild Hyperlipidemia',
-      status: 'ACTIVE',
-      since: '2024-06-15',
-      notes: 'Advised dietary fat reduction and low cholesterol intake.',
-    ).toMap());
+    await db.insert(
+      'patient_conditions',
+      PatientConditionModel(
+        id: 'cond-2',
+        patientId: 'profile-self',
+        name: 'Mild Hyperlipidemia',
+        status: 'ACTIVE',
+        since: '2024-06-15',
+        notes: 'Advised dietary fat reduction and low cholesterol intake.',
+      ).toMap(),
+    );
 
     // 6. Seed Appointments
     final initialAppointments = [
@@ -419,38 +439,47 @@ class AppDatabase {
     }
 
     // 8. Seed Health Records
-    await db.insert('health_records', HealthRecordModel(
-      id: 'rec-echo-1',
-      patientId: 'profile-self',
-      category: 'IMAGING',
-      title: '12-Lead ECG & Echocardiogram Report',
-      issuer: 'HeartCare Clinic Diagnostics',
-      recordDate: now.subtract(const Duration(days: 3)),
-      fileName: 'echocardiogram_ecg_report.pdf',
-      verificationStatus: 'DOCTOR_VERIFIED',
-    ).toMap());
+    await db.insert(
+      'health_records',
+      HealthRecordModel(
+        id: 'rec-echo-1',
+        patientId: 'profile-self',
+        category: 'IMAGING',
+        title: '12-Lead ECG & Echocardiogram Report',
+        issuer: 'HeartCare Clinic Diagnostics',
+        recordDate: now.subtract(const Duration(days: 3)),
+        fileName: 'echocardiogram_ecg_report.pdf',
+        verificationStatus: 'DOCTOR_VERIFIED',
+      ).toMap(),
+    );
 
-    await db.insert('health_records', HealthRecordModel(
-      id: 'rec-cbc-1',
-      patientId: 'profile-self',
-      category: 'LAB_REPORT',
-      title: 'Complete Blood Count (CBC) with Differential',
-      issuer: 'Metropolis Diagnostics Lab',
-      recordDate: now.subtract(const Duration(days: 14)),
-      fileName: 'cbc_report_oct2026.pdf',
-      verificationStatus: 'AI_VERIFIED',
-    ).toMap());
+    await db.insert(
+      'health_records',
+      HealthRecordModel(
+        id: 'rec-cbc-1',
+        patientId: 'profile-self',
+        category: 'LAB_REPORT',
+        title: 'Complete Blood Count (CBC) with Differential',
+        issuer: 'Metropolis Diagnostics Lab',
+        recordDate: now.subtract(const Duration(days: 14)),
+        fileName: 'cbc_report_oct2026.pdf',
+        verificationStatus: 'AI_VERIFIED',
+      ).toMap(),
+    );
 
-    await db.insert('health_records', HealthRecordModel(
-      id: 'rec-rx-1',
-      patientId: 'profile-self',
-      category: 'PRESCRIPTION',
-      title: 'Cardiology Prescription & Regimen',
-      issuer: 'Dr. Aditi Deshmukh (HeartCare Clinic)',
-      recordDate: now.subtract(const Duration(days: 28)),
-      fileName: 'cardiology_prescription.pdf',
-      verificationStatus: 'DOCTOR_VERIFIED',
-    ).toMap());
+    await db.insert(
+      'health_records',
+      HealthRecordModel(
+        id: 'rec-rx-1',
+        patientId: 'profile-self',
+        category: 'PRESCRIPTION',
+        title: 'Cardiology Prescription & Regimen',
+        issuer: 'Dr. Aditi Deshmukh',
+        recordDate: now.subtract(const Duration(days: 28)),
+        fileName: 'cardiology_prescription.pdf',
+        verificationStatus: 'DOCTOR_VERIFIED',
+      ).toMap(),
+    );
 
     // Populate all 201 doctor records migrated from web project
     await seedWebDoctors(db);
